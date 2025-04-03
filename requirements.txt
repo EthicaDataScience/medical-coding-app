@@ -1,0 +1,1 @@
+cd "C:\Users\SekouKaba\LLM\Medical Coding\Medical-Coding-App" && streamlit run app.py
