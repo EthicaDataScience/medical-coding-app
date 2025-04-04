@@ -9,6 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from io import BytesIO
 from tqdm import tqdm
 import os
+import pickle
 
 # === CONFIGURATION ===
 openai.api_key = st.secrets["openai"]["api_key"]
