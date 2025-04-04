@@ -21,11 +21,11 @@ similarity_threshold = 0.85  # Seuil de similarité pour valider la correspondan
 # === AUTHENTIFICATION ===
 authorized_users = ["skaba@ethicacro.com", "data.science@ethicacro.com", "data.management@ethicacro.com"]
 
-st.title("🧬 Codage Automatique MedDRA des Effets Indésirables")
-email = st.text_input("Entrez votre adresse email pour accéder à l'application")
+st.title("🧬 MedDRA Automatic Coding of Adverse Events")
+email = st.text_input("Enter your email address to access the application")
 
 if email not in authorized_users:
-    st.warning("Vous n'êtes pas autorisé à accéder à cette application.")
+    st.warning("You are not authorized to access this application.")
     st.stop()
 
 # === UPLOAD FICHIERS ===
@@ -42,7 +42,7 @@ if uploaded_ae and uploaded_meddra:
         return openai.Embedding.create(input=[text], model=model)["data"][0]["embedding"]
 
     # === PRÉCALCUL DES EMBEDDINGS POUR MEDDRA (llt_name + pt_name) ===
-    st.info("Calcul des embeddings pour la table MedDRA en cours...")
+    st.info("Calculating embeddings for the current MedDRA table...")
     meddra_embeddings = []
     for _, row in tqdm(df_meddra.iterrows(), total=len(df_meddra)):
         for col in ["llt_name", "pt_name"]:
@@ -56,7 +56,7 @@ if uploaded_ae and uploaded_meddra:
                 })
 
     # === TRAITEMENT DES AETERM DE LA TABLE AE ===
-    st.info("Recherche de correspondances sémantiques...")
+    st.info("Search for semantic matches...")
     ae_coding_meddra = []
 
     for _, ae_row in tqdm(df_ae.iterrows(), total=len(df_ae)):
@@ -94,7 +94,7 @@ if uploaded_ae and uploaded_meddra:
     output = BytesIO()
     df_result.to_excel(output, index=False, engine='openpyxl')
     st.download_button(
-        "📥 Télécharger le fichier codé",
+        "📥 Download encoded file",
         data=output.getvalue(),
         file_name="AE_CODING_MEDDRA.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
