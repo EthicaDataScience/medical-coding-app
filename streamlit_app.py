@@ -41,18 +41,27 @@ if uploaded_ae:
         return openai.Embedding.create(input=[text], model=model).data[0].embedding
 
     # === PRÉCALCUL DES EMBEDDINGS POUR MedDRA ===
-    st.info("Calculating embeddings for MedDRA reference terms...")
-    meddra_embeddings = []
-    for _, row in tqdm(df_meddra.iterrows(), total=len(df_meddra)):
-        for col in ["llt_name", "pt_name"]:
-            if pd.notna(row[col]):
-                embedding = get_embedding(row[col])
-                meddra_embeddings.append({
-                    "source": col,
-                    "term": row[col],
-                    "embedding": embedding,
-                    "row": row
-                })
+    embeddings_path = "meddra_embeddings.pkl"
+    if os.path.exists(embeddings_path):
+        st.info("🔄 Loading precomputed MedDRA embeddings...")
+        with open(embeddings_path, "rb") as f:
+            meddra_embeddings = pickle.load(f)
+    else:
+        st.info("⚙️ Calculating embeddings for MedDRA reference terms (first time only)...")
+        meddra_embeddings = []
+        for _, row in tqdm(df_meddra.iterrows(), total=len(df_meddra)):
+            for col in ["llt_name", "pt_name"]:
+                if pd.notna(row[col]):
+                    embedding = get_embedding(row[col])
+                    meddra_embeddings.append({
+                        "source": col,
+                        "term": row[col],
+                        "embedding": embedding,
+                        "row": row
+                    })
+        # Enregistrement des embeddings
+        with open(embeddings_path, "wb") as f:
+            pickle.dump(meddra_embeddings, f)
 
     # === TRAITEMENT DES AETERM ===
     st.info("Searching for semantic matches...")
