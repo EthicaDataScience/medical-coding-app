@@ -5,4 +5,4 @@ numpy
 scikit-learn
 tqdm
 openpyxl
-pickle
+#pickle
