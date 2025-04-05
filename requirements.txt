@@ -6,3 +6,4 @@ scikit-learn
 tqdm
 openpyxl
 #pickle
+sentence-transformers
