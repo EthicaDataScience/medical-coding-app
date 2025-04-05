@@ -50,7 +50,7 @@ if uploaded_ae:
         return embedding_model.encode([text])[0]
 
     # === PRÉCALCUL DES EMBEDDINGS POUR MedDRA ===
-    embeddings_path = "meddra_embeddings.pkl"
+    embeddings_path = "meddra_embeddings-2.pkl"
     if os.path.exists(embeddings_path):
         st.info("🔄 Loading precomputed MedDRA embeddings...")
         with open(embeddings_path, "rb") as f:
