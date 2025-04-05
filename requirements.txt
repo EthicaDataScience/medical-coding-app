@@ -7,3 +7,4 @@ tqdm
 openpyxl
 #pickle
 sentence-transformers
+faiss-cpu
